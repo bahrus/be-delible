@@ -1,3 +1,3 @@
 # be-delible
 
-delible
+Make a DOM element delible.

@@ -1,8 +1,23 @@
 {
   "name": "be-delible",
   "version": "0.0.0",
-  "description": "",
-  "main": "index.js",
+  "keywords": [
+    "web-components",
+    "web-component",
+    "custom-element",
+    "custom-elements"
+  ],
+  "description": "Make a DOM element delible",
+  "main": "be-delible.js",
+  "module": "be-delible.js",
+  "exports":{
+    ".": "./be-delible.js",
+    "./be-delible.js": "./be-delible.js"
+  },
+  "files": [
+    "*.*"
+  ],
+  "types": "types.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "serve": "node node_modules/may-it-serve/serve.js",
