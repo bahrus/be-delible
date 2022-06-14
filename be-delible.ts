@@ -87,6 +87,9 @@ define<BeDelibleProps & BeDecoratedProps<BeDelibleProps, BeDelibleActions>, BeDe
             onInsertPosition: 'insertPosition',
             onText: 'text',
         }
+    },
+    complexPropDefaults:{
+        controller: BeDelible,
     }
 });
 

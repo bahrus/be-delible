@@ -75,6 +75,9 @@ define({
             onInsertPosition: 'insertPosition',
             onText: 'text',
         }
+    },
+    complexPropDefaults: {
+        controller: BeDelible,
     }
 });
 register(ifWantsToBe, upgrade, tagName);
