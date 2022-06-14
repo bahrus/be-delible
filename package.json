@@ -1,6 +1,6 @@
 {
   "name": "be-delible",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "keywords": [
     "web-components",
     "web-component",
@@ -10,7 +10,7 @@
   "description": "Make a DOM element delible",
   "main": "be-delible.js",
   "module": "be-delible.js",
-  "exports":{
+  "exports": {
     ".": "./be-delible.js",
     "./be-delible.js": "./be-delible.js"
   },
