@@ -7,7 +7,10 @@ export class BeDelible implements BeDelibleActions{
     intro(proxy: Element & BeDelibleProps, target: Element, beDecorProps: BeDecoratedProps): void{
     }
     finale(proxy: Element & BeDelibleProps, target: Element, beDecorProps: BeDecoratedProps): void{
-
+        if(this.#trigger !== undefined){
+            this.#trigger.removeEventListener('click', this.handleClick);
+            this.#trigger.remove();
+        }
     }
     onInsertPosition({text, insertPosition}: this): void{
         if(this.#trigger === undefined){
