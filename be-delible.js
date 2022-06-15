@@ -10,7 +10,7 @@ export class BeDelible {
             this.#trigger.remove();
         }
     }
-    onInsertPosition({ text, insertPosition }) {
+    async onInsertPosition({ text, insertPosition, then }) {
         if (this.#trigger === undefined) {
             switch (insertPosition) {
                 case 'afterbegin':
@@ -46,6 +46,10 @@ export class BeDelible {
             }
             this.onText(this);
             this.#trigger.addEventListener('click', this.handleClick);
+            if (then !== undefined) {
+                const { doThen } = await import('be-decorated/doThen.js');
+                doThen(this.proxy, then);
+            }
         }
     }
     onText({ text }) {
@@ -66,7 +70,7 @@ define({
         tagName,
         propDefaults: {
             ifWantsToBe,
-            virtualProps: ['insertPosition', 'text'],
+            virtualProps: ['insertPosition', 'text', 'then'],
             upgrade,
             intro: 'intro',
             finale: 'finale',
