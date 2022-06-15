@@ -5,6 +5,10 @@ export class BeDelible {
     intro(proxy, target, beDecorProps) {
     }
     finale(proxy, target, beDecorProps) {
+        if (this.#trigger !== undefined) {
+            this.#trigger.removeEventListener('click', this.handleClick);
+            this.#trigger.remove();
+        }
     }
     onInsertPosition({ text, insertPosition }) {
         if (this.#trigger === undefined) {
@@ -38,10 +42,10 @@ export class BeDelible {
             if (this.#trigger === undefined) {
                 this.#trigger = document.createElement('button');
                 this.#trigger.classList.add('be-delible-trigger');
+                this.proxy.insertAdjacentElement(insertPosition, this.#trigger);
             }
             this.onText(this);
             this.#trigger.addEventListener('click', this.handleClick);
-            this.proxy.insertAdjacentElement(insertPosition, this.#trigger);
         }
     }
     onText({ text }) {
