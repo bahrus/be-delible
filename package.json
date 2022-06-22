@@ -8,8 +8,9 @@
     "custom-elements"
   ],
   "description": "Make a DOM element delible",
-  "main": "be-delible.js",
-  "module": "be-delible.js",
+  "main": "index.js",
+  "module": "index.js",
+  "type": "module",
   "exports": {
     ".": "./index.js",
     "./be-delible.js": "./be-delible.js",
