@@ -1,6 +1,8 @@
 import { register } from 'be-hive/register.js';
 import { define } from 'be-decorated/be-decorated.js';
+import { Deleter } from './Deleter.js';
 export class BeDelible {
+    #deleter;
     #trigger;
     intro(proxy, target, beDecorProps) {
     }
@@ -10,57 +12,18 @@ export class BeDelible {
             this.#trigger.remove();
         }
     }
-    async onInsertPosition({ text, insertPosition, then }) {
-        if (this.#trigger === undefined) {
-            switch (insertPosition) {
-                case 'afterbegin':
-                case 'beforeend':
-                    {
-                        const trigger = this.proxy.querySelector('button.be-delible-trigger');
-                        if (trigger !== null) {
-                            this.#trigger = trigger;
-                        }
-                    }
-                    break;
-                case 'beforebegin':
-                    {
-                        const trigger = this.proxy.previousElementSibling;
-                        if (trigger !== null && trigger.matches('button.be-delible-trigger')) {
-                            this.#trigger = trigger;
-                        }
-                    }
-                    break;
-                case 'afterend':
-                    {
-                        const trigger = this.proxy.nextElementSibling;
-                        if (trigger !== null && trigger.matches('button.be-delible-trigger')) {
-                            this.#trigger = trigger;
-                        }
-                    }
-                    break;
-            }
-            if (this.#trigger === undefined) {
-                this.#trigger = document.createElement('button');
-                this.#trigger.classList.add('be-delible-trigger');
-                this.proxy.insertAdjacentElement(insertPosition, this.#trigger);
-            }
-            this.onText(this);
-            this.#trigger.addEventListener('click', this.handleClick);
-            if (then !== undefined) {
-                const { doThen } = await import('be-decorated/doThen.js');
-                doThen(this.proxy, then);
-            }
+    async onInsertPosition(self) {
+        if (this.#deleter === undefined) {
+            this.#deleter = new Deleter(self.proxy, self.proxy);
         }
+        this.#deleter.addDeleteButtonTrigger(self);
     }
-    onText({ text }) {
-        if (this.#trigger !== undefined) {
-            this.#trigger.innerHTML = text; //TODO:  sanitize
+    onText(self) {
+        if (this.#deleter === undefined) {
+            this.#deleter = new Deleter(self.proxy, self.proxy);
         }
+        this.#deleter.setText(this);
     }
-    handleClick = (e) => {
-        this.proxy.remove();
-        this.#trigger.remove();
-    };
 }
 const tagName = 'be-delible';
 const ifWantsToBe = 'delible';
