@@ -1,3 +1,4 @@
+import { register } from 'trans-render/lib/pluginMgr.js';
 import { Deleter, proxyPropDefaults } from './Deleter.js';
 import { passTheBaton } from 'be-decorated/relay.js';
 export const trPlugin = {
@@ -14,3 +15,4 @@ export const trPlugin = {
         passTheBaton('delible', target, deleter);
     }
 };
+register(trPlugin);

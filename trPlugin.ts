@@ -19,3 +19,5 @@ export const trPlugin: TransformPluginSettings = {
         passTheBaton('delible', target!, deleter);
     }
 }
+
+register(trPlugin);
