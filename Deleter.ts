@@ -38,4 +38,11 @@ export class Deleter{
         this.proxy.remove();
         this.#trigger!.remove();
     }
+
+    dispose(){
+        if(this.#trigger !== undefined){
+            this.#trigger.removeEventListener('click', this.handleClick);
+            this.#trigger.remove();
+        }
+    }
 }

@@ -5,13 +5,11 @@ import {Deleter} from './Deleter.js';
 
 export class BeDelible implements BeDelibleActions{
     #deleter!:  Deleter;
-    #trigger: HTMLButtonElement | undefined;
     intro(proxy: Element & BeDelibleProps, target: Element, beDecorProps: BeDecoratedProps): void{
     }
     finale(proxy: Element & BeDelibleProps, target: Element, beDecorProps: BeDecoratedProps): void{
-        if(this.#trigger !== undefined){
-            this.#trigger.removeEventListener('click', this.handleClick);
-            this.#trigger.remove();
+        if(this.#deleter !== undefined){
+            this.#deleter.dispose();
         }
     }
     async onInsertPosition(self: this): Promise<void>{

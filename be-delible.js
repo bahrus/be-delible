@@ -3,13 +3,11 @@ import { define } from 'be-decorated/be-decorated.js';
 import { Deleter } from './Deleter.js';
 export class BeDelible {
     #deleter;
-    #trigger;
     intro(proxy, target, beDecorProps) {
     }
     finale(proxy, target, beDecorProps) {
-        if (this.#trigger !== undefined) {
-            this.#trigger.removeEventListener('click', this.handleClick);
-            this.#trigger.remove();
+        if (this.#deleter !== undefined) {
+            this.#deleter.dispose();
         }
     }
     async onInsertPosition(self) {
