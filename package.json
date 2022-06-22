@@ -11,8 +11,9 @@
   "main": "be-delible.js",
   "module": "be-delible.js",
   "exports": {
-    ".": "./be-delible.js",
-    "./be-delible.js": "./be-delible.js"
+    ".": "./index.js",
+    "./be-delible.js": "./be-delible.js",
+    "./index.js": "./index.js"
   },
   "files": [
     "*.*"
