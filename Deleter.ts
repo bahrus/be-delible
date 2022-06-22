@@ -12,12 +12,12 @@ export class Deleter{
 
     async addDeleteButtonTrigger({insertPosition, then}: BeDelibleVirtualProps){
         if(this.#trigger === undefined){
-            const trigger = findAdjacentElement(insertPosition, this.proxy, 'button.be-delible-trigger');
+            const trigger = findAdjacentElement(insertPosition!, this.proxy, 'button.be-delible-trigger');
             if(trigger !== null) this.#trigger = trigger as HTMLButtonElement;
             if(this.#trigger === undefined){
                 this.#trigger = document.createElement('button');
                 this.#trigger.classList.add('be-delible-trigger');
-                this.proxy.insertAdjacentElement(insertPosition, this.#trigger);
+                this.proxy.insertAdjacentElement(insertPosition!, this.#trigger);
             }
             this.setText(this.props);
             this.#trigger.addEventListener('click', this.handleClick);
@@ -30,7 +30,7 @@ export class Deleter{
 
     setText({text}: BeDelibleVirtualProps): void{
         if(this.#trigger !== undefined){
-            this.#trigger.innerHTML = text;//TODO:  sanitize
+            this.#trigger.innerHTML = text!;//TODO:  sanitize
         }
     }
 
@@ -45,4 +45,9 @@ export class Deleter{
             this.#trigger.remove();
         }
     }
+}
+
+export const proxyPropDefaults: BeDelibleVirtualProps = {
+    insertPosition:'beforeend',
+    text: '&times;',
 }

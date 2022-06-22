@@ -1,9 +1,12 @@
 import { register } from 'be-hive/register.js';
 import { define } from 'be-decorated/be-decorated.js';
-import { Deleter } from './Deleter.js';
+import { Deleter, proxyPropDefaults } from './Deleter.js';
 export class BeDelible {
     #deleter;
     intro(proxy, target, beDecorProps) {
+    }
+    batonPass(proxy, target, beDecorProps, baton) {
+        this.#deleter = baton;
     }
     finale(proxy, target, beDecorProps) {
         if (this.#deleter !== undefined) {
@@ -35,10 +38,7 @@ define({
             upgrade,
             intro: 'intro',
             finale: 'finale',
-            proxyPropDefaults: {
-                insertPosition: 'beforeend',
-                text: '&times;',
-            }
+            proxyPropDefaults,
         },
         actions: {
             onInsertPosition: 'insertPosition',

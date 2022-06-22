@@ -44,3 +44,7 @@ export class Deleter {
         }
     }
 }
+export const proxyPropDefaults = {
+    insertPosition: 'beforeend',
+    text: '&times;',
+};

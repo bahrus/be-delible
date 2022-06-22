@@ -9,7 +9,7 @@
 		"watch": true
 	},
 	"files": [
-		"be-delible.ts"
+		"index.ts"
 	],
 	"exclude":[
 		"build",
