@@ -16,6 +16,7 @@ export class Deleter{
             if(trigger !== null) this.#trigger = trigger as HTMLButtonElement;
             if(this.#trigger === undefined){
                 this.#trigger = document.createElement('button');
+                this.#trigger.type = 'button';
                 this.#trigger.classList.add('be-delible-trigger');
                 this.proxy.insertAdjacentElement(insertPosition!, this.#trigger);
             }
