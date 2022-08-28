@@ -1,10 +1,8 @@
 import { register } from 'be-hive/register.js';
 import { define } from 'be-decorated/be-decorated.js';
 import { Deleter, proxyPropDefaults } from './Deleter.js';
-export class BeDelible {
+export class BeDelible extends EventTarget {
     #deleter;
-    intro(proxy, target, beDecorProps) {
-    }
     batonPass(proxy, target, beDecorProps, baton) {
         this.#deleter = baton;
     }
@@ -13,16 +11,18 @@ export class BeDelible {
             this.#deleter.dispose();
         }
     }
-    async onInsertPosition(self) {
-        if (this.#deleter === undefined) {
-            this.#deleter = new Deleter(self.proxy, self.proxy);
+    async onInsertPosition({ proxy }) {
+        this.ensure(this);
+        await this.#deleter.addDeleteButtonTrigger(this);
+        proxy.resolved = true;
+    }
+    ensure(self) {
+        if (self.#deleter === undefined) {
+            self.#deleter = new Deleter(self.proxy, self.proxy);
         }
-        this.#deleter.addDeleteButtonTrigger(self);
     }
     onText(self) {
-        if (this.#deleter === undefined) {
-            this.#deleter = new Deleter(self.proxy, self.proxy);
-        }
+        this.ensure(self);
         this.#deleter.setText(this);
     }
 }
@@ -34,9 +34,8 @@ define({
         tagName,
         propDefaults: {
             ifWantsToBe,
-            virtualProps: ['insertPosition', 'text', 'then'],
+            virtualProps: ['insertPosition', 'text',],
             upgrade,
-            intro: 'intro',
             finale: 'finale',
             proxyPropDefaults,
         },

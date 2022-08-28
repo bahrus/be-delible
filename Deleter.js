@@ -10,7 +10,7 @@ export class Deleter {
             this.props = proxy;
         }
     }
-    async addDeleteButtonTrigger({ insertPosition, then }) {
+    async addDeleteButtonTrigger({ insertPosition }) {
         if (this.#trigger === undefined) {
             const trigger = findAdjacentElement(insertPosition, this.proxy, 'button.be-delible-trigger');
             if (trigger !== null)
@@ -23,10 +23,6 @@ export class Deleter {
             }
             this.setText(this.props);
             this.#trigger.addEventListener('click', this.handleClick);
-            if (then !== undefined) {
-                const { doThen } = await import('be-decorated/doThen.js');
-                doThen(this.proxy, then);
-            }
         }
     }
     setText({ text }) {

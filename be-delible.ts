@@ -3,10 +3,8 @@ import {define, BeDecoratedProps} from 'be-decorated/be-decorated.js';
 import {BeDelibleActions, BeDelibleProps, BeDelibleVirtualProps} from './types';
 import {Deleter, proxyPropDefaults} from './Deleter.js';
 
-export class BeDelible implements BeDelibleActions{
+export class BeDelible extends EventTarget implements BeDelibleActions{
     #deleter!:  Deleter;
-    intro(proxy: Element & BeDelibleProps, target: Element, beDecorProps: BeDecoratedProps): void{
-    }
     batonPass(proxy: Element & BeDelibleVirtualProps, target: Element, beDecorProps: BeDecoratedProps<any, any>, baton: any): void {
         this.#deleter = baton;
     }
@@ -15,18 +13,20 @@ export class BeDelible implements BeDelibleActions{
             this.#deleter.dispose();
         }
     }
-    async onInsertPosition(self: this): Promise<void>{
-        if(this.#deleter === undefined){
-            this.#deleter = new Deleter(self.proxy, self.proxy);
-        }
-        this.#deleter.addDeleteButtonTrigger(self);
+    async onInsertPosition({proxy}: this): Promise<void>{
+        this.ensure(this);
+        await this.#deleter.addDeleteButtonTrigger(this);
+        proxy.resolved = true;
+    }
 
+    ensure(self: this){
+        if(self.#deleter === undefined){
+            self.#deleter = new Deleter(self.proxy, self.proxy);
+        }
     }
 
     onText(self: this): void{
-        if(this.#deleter === undefined){
-            this.#deleter = new Deleter(self.proxy, self.proxy);
-        }
+        this.ensure(self);
         this.#deleter.setText(this);
     }
 
@@ -45,9 +45,8 @@ define<BeDelibleProps & BeDecoratedProps<BeDelibleProps, BeDelibleActions>, BeDe
         tagName,
         propDefaults:{
             ifWantsToBe,
-            virtualProps: ['insertPosition', 'text', 'then'],
+            virtualProps: ['insertPosition', 'text',],
             upgrade,
-            intro: 'intro',
             finale: 'finale',
             proxyPropDefaults,
         },

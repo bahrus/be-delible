@@ -26,19 +26,19 @@
     "package-check": "package-check"
   },
   "dependencies": {
-    "be-decorated": "0.0.125",
-    "be-hive": "0.0.46",
-    "trans-render": "0.0.538"
+    "be-decorated": "0.0.147",
+    "be-hive": "0.0.57",
+    "trans-render": "0.0.578"
   },
   "devDependencies": {
-    "may-it-serve": "0.0.0",
+    "may-it-serve": "0.0.2",
     "@skypack/package-check": "0.2.2"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bahrus/be-delible.git"
   },
-  "author": "",
+  "author": "Bruce B. Anderson <anderson.bruce.b@gmail.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/bahrus/be-delible/issues"

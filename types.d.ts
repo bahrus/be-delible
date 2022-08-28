@@ -1,9 +1,8 @@
-import {BeDecoratedProps} from 'be-decorated/types';
+import {BeDecoratedProps, MinimalProxy} from 'be-decorated/types';
 
-export interface BeDelibleVirtualProps {
+export interface BeDelibleVirtualProps extends MinimalProxy{
     insertPosition?: InsertPosition;
     text?: string;
-    then?: string | any[] | any;
 }
 
 export interface BeDelibleProps extends BeDelibleVirtualProps{
@@ -11,7 +10,6 @@ export interface BeDelibleProps extends BeDelibleVirtualProps{
 }
 
 export interface BeDelibleActions{
-    intro(proxy: Element & BeDelibleVirtualProps, target: Element, beDecorProps: BeDecoratedProps): void;
     batonPass(proxy: Element & BeDelibleVirtualProps, target: Element, beDecorProps: BeDecoratedProps, baton: any): void;
     finale(proxy: Element & BeDelibleVirtualProps, target: Element, beDecorProps: BeDecoratedProps): void;
     onInsertPosition(self: this): void;
