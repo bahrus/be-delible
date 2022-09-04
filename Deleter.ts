@@ -1,16 +1,16 @@
-import {BeDelibleVirtualProps} from './types';
+import {BeDelibleVirtualProps, BeDelibleEndUserProps} from './types';
 import {findAdjacentElement} from 'be-decorated/findAdjacentElement.js';
 
 export class Deleter{
     #trigger: HTMLButtonElement | undefined;
 
-    constructor(public proxy: Element, public props: BeDelibleVirtualProps){
+    constructor(public proxy: Element, public props: BeDelibleEndUserProps){
         if(props === undefined){
             this.props = proxy as any as BeDelibleVirtualProps;
         }
     }
 
-    async addDeleteButtonTrigger({insertPosition}: BeDelibleVirtualProps){
+    async addDeleteButtonTrigger({insertPosition}: BeDelibleEndUserProps){
         if(this.#trigger === undefined){
             const trigger = findAdjacentElement(insertPosition!, this.proxy, 'button.be-delible-trigger');
             if(trigger !== null) this.#trigger = trigger as HTMLButtonElement;
@@ -25,7 +25,7 @@ export class Deleter{
         }
     }
 
-    setText({text}: BeDelibleVirtualProps): void{
+    setText({text}: BeDelibleEndUserProps): void{
         if(this.#trigger !== undefined){
             this.#trigger.innerHTML = text!;//TODO:  sanitize
         }
@@ -44,7 +44,7 @@ export class Deleter{
     }
 }
 
-export const proxyPropDefaults: BeDelibleVirtualProps = {
+export const proxyPropDefaults: BeDelibleEndUserProps = {
     insertPosition:'beforeend',
     text: '&times;',
 }

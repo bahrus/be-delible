@@ -11,19 +11,20 @@ export class BeDelible extends EventTarget {
             this.#deleter.dispose();
         }
     }
-    async onInsertPosition({ proxy }) {
-        this.ensure(this);
-        await this.#deleter.addDeleteButtonTrigger(this);
+    async onInsertPosition(pp) {
+        const { proxy } = pp;
+        this.ensure(pp);
+        await this.#deleter.addDeleteButtonTrigger(pp);
         proxy.resolved = true;
     }
-    ensure(self) {
-        if (self.#deleter === undefined) {
-            self.#deleter = new Deleter(self.proxy, self.proxy);
+    ensure({ proxy }) {
+        if (this.#deleter === undefined) {
+            this.#deleter = new Deleter(proxy, proxy);
         }
     }
-    onText(self) {
-        this.ensure(self);
-        this.#deleter.setText(this);
+    onText(pp) {
+        this.ensure(pp);
+        this.#deleter.setText(pp);
     }
 }
 const tagName = 'be-delible';

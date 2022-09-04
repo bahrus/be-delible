@@ -1,38 +1,38 @@
 import {register} from 'be-hive/register.js';
 import {define, BeDecoratedProps} from 'be-decorated/be-decorated.js';
-import {BeDelibleActions, BeDelibleProps, BeDelibleVirtualProps} from './types';
+import {BeDelibleActions, Proxy, BeDelibleVirtualProps, PP} from './types';
 import {Deleter, proxyPropDefaults} from './Deleter.js';
 
 export class BeDelible extends EventTarget implements BeDelibleActions{
     #deleter!:  Deleter;
-    batonPass(proxy: Element & BeDelibleVirtualProps, target: Element, beDecorProps: BeDecoratedProps<any, any>, baton: any): void {
+    batonPass(proxy: Proxy, target: Element, beDecorProps: BeDecoratedProps<any, any>, baton: any): void {
         this.#deleter = baton;
     }
-    finale(proxy: Element & BeDelibleProps, target: Element, beDecorProps: BeDecoratedProps): void{
+    finale(proxy: Proxy, target: Element, beDecorProps: BeDecoratedProps): void{
         if(this.#deleter !== undefined){
             this.#deleter.dispose();
         }
     }
-    async onInsertPosition({proxy}: this): Promise<void>{
-        this.ensure(this);
-        await this.#deleter.addDeleteButtonTrigger(this);
+    async onInsertPosition(pp: PP): Promise<void>{
+        const {proxy} = pp;
+        this.ensure(pp);
+        await this.#deleter.addDeleteButtonTrigger(pp);
         proxy.resolved = true;
     }
 
-    ensure(self: this){
-        if(self.#deleter === undefined){
-            self.#deleter = new Deleter(self.proxy, self.proxy);
+    ensure({proxy}: PP){
+        if(this.#deleter === undefined){
+            this.#deleter = new Deleter(proxy, proxy);
         }
     }
 
-    onText(self: this): void{
-        this.ensure(self);
-        this.#deleter.setText(this);
+    onText(pp: PP): void{
+        this.ensure(pp);
+        this.#deleter.setText(pp);
     }
 
 }
 
-export interface BeDelible extends BeDelibleProps{}
 
 const tagName = 'be-delible';
 
@@ -40,7 +40,7 @@ const ifWantsToBe = 'delible';
 
 const upgrade = '*';
 
-define<BeDelibleProps & BeDecoratedProps<BeDelibleProps, BeDelibleActions>, BeDelibleActions>({
+define<BeDelibleVirtualProps & BeDecoratedProps<BeDelibleVirtualProps, BeDelibleActions>, BeDelibleActions>({
     config:{
         tagName,
         propDefaults:{
