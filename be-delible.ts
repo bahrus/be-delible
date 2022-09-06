@@ -1,9 +1,9 @@
 import {register} from 'be-hive/register.js';
 import {define, BeDecoratedProps} from 'be-decorated/be-decorated.js';
-import {BeDelibleActions, Proxy, BeDelibleVirtualProps, PP} from './types';
+import {Actions, Proxy, VirtualProps, PP} from './types';
 import {Deleter, proxyPropDefaults} from './Deleter.js';
 
-export class BeDelible extends EventTarget implements BeDelibleActions{
+export class BeDelible extends EventTarget implements Actions{
     #deleter!:  Deleter;
     batonPass(proxy: Proxy, target: Element, beDecorProps: BeDecoratedProps<any, any>, baton: any): void {
         this.#deleter = baton;
@@ -40,7 +40,7 @@ const ifWantsToBe = 'delible';
 
 const upgrade = '*';
 
-define<BeDelibleVirtualProps & BeDecoratedProps<BeDelibleVirtualProps, BeDelibleActions>, BeDelibleActions>({
+define<VirtualProps & BeDecoratedProps<VirtualProps, Actions>, Actions>({
     config:{
         tagName,
         propDefaults:{

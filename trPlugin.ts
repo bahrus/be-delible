@@ -1,6 +1,6 @@
 import {RenderContext, TransformPluginSettings} from 'trans-render/lib/types';
 import {register} from 'trans-render/lib/pluginMgr.js';
-import {BeDelibleVirtualProps} from './types';
+import {VirtualProps} from './types';
 import {Deleter, proxyPropDefaults} from './Deleter.js';
 import {passTheBaton} from 'be-decorated/relay.js';
 
@@ -10,7 +10,7 @@ export const trPlugin: TransformPluginSettings = {
     processor:  async ({target, val, attrib, host}: RenderContext) => {
         let defaults = {...proxyPropDefaults};
         if(val){
-            const params = JSON.parse(val) as BeDelibleVirtualProps;
+            const params = JSON.parse(val) as VirtualProps;
             Object.assign(defaults, params);
         }
         const deleter = new Deleter(target!, defaults);
