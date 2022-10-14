@@ -1,5 +1,5 @@
 import { register } from 'be-hive/register.js';
-import { define } from 'be-decorated/be-decorated.js';
+import { define } from 'be-decorated/DE.js';
 import { Deleter, proxyPropDefaults } from './Deleter.js';
 export class BeDelible extends EventTarget {
     #deleter;
