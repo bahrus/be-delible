@@ -25,7 +25,7 @@
     "package-check": "package-check"
   },
   "dependencies": {
-    "be-decorated": "0.0.186",
+    "be-decorated": "0.0.187",
     "be-hive": "0.0.76",
     "trans-render": "0.0.629"
   },

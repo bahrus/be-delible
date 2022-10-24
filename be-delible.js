@@ -23,6 +23,7 @@ export class BeDelible extends EventTarget {
             return [{ resolved: true, byob }, { beDeleted: { on: 'click', of: this.#trigger } }];
         }
         else {
+            //can't think of a scenario where consumer would want to change the trigger position midstream, so not bothering to do anything here
         }
     }
     beDeleted({ self }) {
