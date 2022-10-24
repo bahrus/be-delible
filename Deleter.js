@@ -10,16 +10,16 @@ export class Deleter {
             this.props = proxy;
         }
     }
-    async addDeleteButtonTrigger({ insertPosition }) {
+    async addDeleteButtonTrigger({ buttonInsertPosition }) {
         if (this.#trigger === undefined) {
-            const trigger = findAdjacentElement(insertPosition, this.proxy, 'button.be-delible-trigger');
+            const trigger = findAdjacentElement(buttonInsertPosition, this.proxy, 'button.be-delible-trigger');
             if (trigger !== null)
                 this.#trigger = trigger;
             if (this.#trigger === undefined) {
                 this.#trigger = document.createElement('button');
                 this.#trigger.type = 'button';
                 this.#trigger.classList.add('be-delible-trigger');
-                this.proxy.insertAdjacentElement(insertPosition, this.#trigger);
+                this.proxy.insertAdjacentElement(buttonInsertPosition, this.#trigger);
             }
             this.setText(this.props);
             this.#trigger.addEventListener('click', this.handleClick);

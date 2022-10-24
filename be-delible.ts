@@ -1,38 +1,46 @@
 import {register} from 'be-hive/register.js';
 import {define, BeDecoratedProps} from 'be-decorated/DE.js';
-import {Actions, Proxy, VirtualProps, PP} from './types';
-import {Deleter, proxyPropDefaults} from './Deleter.js';
-
+import {Actions, PP, PPE, VirtualProps, Proxy, ProxyProps} from './types';
 export class BeDelible extends EventTarget implements Actions{
-    #deleter!:  Deleter;
-    batonPass(proxy: Proxy, target: Element, beDecorProps: BeDecoratedProps<any, any>, baton: any): void {
-        this.#deleter = baton;
-    }
-    finale(proxy: Proxy, target: Element, beDecorProps: BeDecoratedProps): void{
-        if(this.#deleter !== undefined){
-            this.#deleter.dispose();
+    #trigger: HTMLButtonElement | undefined;
+    async addDeleteBtn(pp: PP): Promise<PPE | void> {
+        if(this.#trigger === undefined){
+            //the check above is unlikely to ever fail.
+            const {buttonInsertPosition, self} = pp;
+            const {findAdjacentElement} = await import('be-decorated/findAdjacentElement.js');
+            const trigger = findAdjacentElement(buttonInsertPosition!, self, 'button.be-delible-trigger');
+            if(trigger !== null) this.#trigger = trigger as HTMLButtonElement;
+            let byob = true;
+            if(this.#trigger === undefined){
+                byob = false;
+                this.#trigger = document.createElement('button');
+                this.#trigger.type = 'button';
+                this.#trigger.classList.add('be-delible-trigger');
+                this.#trigger.ariaLabel = 'Delete this.';
+                this.#trigger.title = 'Delete this.';
+                self.insertAdjacentElement(buttonInsertPosition!, this.#trigger);
+            }
+            return [{resolved: true, byob}, {beDeleted: {on: 'click', of: this.#trigger}}]
+        }else{
+            
         }
     }
-    async onInsertPosition(pp: PP): Promise<void>{
-        const {proxy} = pp;
-        this.ensure(pp);
-        await this.#deleter.addDeleteButtonTrigger(pp);
-        proxy.resolved = true;
+
+    beDeleted({self}: PP): void {
+        self.remove();
+        this.#trigger!.remove();
     }
 
-    ensure({proxy}: PP){
-        if(this.#deleter === undefined){
-            this.#deleter = new Deleter(proxy, proxy);
+    setBtnContent({buttonContent}: PP): void{
+        if(this.#trigger !== undefined){
+            this.#trigger.innerHTML = buttonContent!;//TODO:  sanitize
         }
     }
 
-    onText(pp: PP): void{
-        this.ensure(pp);
-        this.#deleter.setText(pp);
+    finale() {
+        this.#trigger = undefined;
     }
-
 }
-
 
 const tagName = 'be-delible';
 
@@ -45,19 +53,27 @@ define<VirtualProps & BeDecoratedProps<VirtualProps, Actions>, Actions>({
         tagName,
         propDefaults:{
             ifWantsToBe,
-            virtualProps: ['insertPosition', 'text',],
+            virtualProps: ['buttonContent', 'buttonInsertPosition', 'byob'],
             upgrade,
             finale: 'finale',
-            proxyPropDefaults,
+            proxyPropDefaults:{
+                byob: true,
+                buttonInsertPosition:'beforeend',
+                buttonContent: '&times;',
+            }
         },
         actions:{
-            onInsertPosition: 'insertPosition',
-            onText: 'text',
+            addDeleteBtn: 'buttonInsertPosition',
+            setBtnContent: {
+                ifAllOf: ['buttonContent'],
+                ifNoneOf: ['byob']
+            },
         }
     },
     complexPropDefaults:{
         controller: BeDelible,
     }
 });
+
 
 register(ifWantsToBe, upgrade, tagName);

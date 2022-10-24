@@ -1,4 +1,4 @@
-import {VirtualProps, EndUserProps} from './types';
+import {VirtualProps, EndUserProps, PP} from './types';
 import {findAdjacentElement} from 'be-decorated/findAdjacentElement.js';
 
 export class Deleter{
@@ -10,15 +10,15 @@ export class Deleter{
         }
     }
 
-    async addDeleteButtonTrigger({insertPosition}: EndUserProps){
+    async addDeleteButtonTrigger({buttonInsertPosition}: PP){
         if(this.#trigger === undefined){
-            const trigger = findAdjacentElement(insertPosition!, this.proxy, 'button.be-delible-trigger');
+            const trigger = findAdjacentElement(buttonInsertPosition!, this.proxy, 'button.be-delible-trigger');
             if(trigger !== null) this.#trigger = trigger as HTMLButtonElement;
             if(this.#trigger === undefined){
                 this.#trigger = document.createElement('button');
                 this.#trigger.type = 'button';
                 this.#trigger.classList.add('be-delible-trigger');
-                this.proxy.insertAdjacentElement(insertPosition!, this.#trigger);
+                this.proxy.insertAdjacentElement(buttonInsertPosition!, this.#trigger);
             }
             this.setText(this.props);
             this.#trigger.addEventListener('click', this.handleClick);
