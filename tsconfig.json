@@ -9,11 +9,9 @@
 		"watch": true
 	},
 	"files": [
-		"index.ts"
+		"be-delible.ts"
 	],
 	"exclude":[
-		"build",
-		"bower_components",
 		"node_modules"
 	]
 
