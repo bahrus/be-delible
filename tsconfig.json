@@ -9,7 +9,7 @@
 		"watch": true
 	},
 	"files": [
-		"be-delible2.ts"
+		"be-delible.ts"
 	],
 	"exclude":[
 		"node_modules"

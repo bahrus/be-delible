@@ -1,68 +1,80 @@
+import {BE, propDefaults, propInfo} from 'be-enhanced/BE.js';
+import {BEConfig} from 'be-enhanced/types';
+import {XE} from 'xtal-element/XE.js';
+import {Actions, AllProps, AP, PAP, ProPAP, POA, ProPOA} from './types';
 import {register} from 'be-hive/register.js';
-import {define, BeDecoratedProps} from 'be-decorated/DE.js';
-import {Actions, PP, PPE, VirtualProps, Proxy, ProxyProps} from './types';
-export class BeDelible extends EventTarget implements Actions{
-    #trigger: HTMLButtonElement | undefined;
-    async addDeleteBtn(pp: PP): Promise<PPE | void> {
-        if(this.#trigger === undefined){
+
+export class BeDelible extends BE<AP, Actions> implements Actions{
+    static  override get beConfig(){
+        return {
+            parse: true,
+        } as BEConfig
+    }
+
+    #trigger: WeakRef<HTMLButtonElement> | undefined;
+
+    get trigger(){
+        if(this.#trigger === undefined) return undefined;
+        return this.#trigger.deref();
+    }
+
+    async addDeleteBtn(self: this){
+        if(this.trigger === undefined){
             //the check above is unlikely to ever fail.
-            const {buttonInsertPosition, self} = pp;
-            const {findAdjacentElement} = await import('be-decorated/findAdjacentElement.js');
-            const trigger = findAdjacentElement(buttonInsertPosition!, self, 'button.be-delible-trigger');
-            if(trigger !== null) this.#trigger = trigger as HTMLButtonElement;
+            const {buttonInsertPosition, enhancedElement} = self;
+            const {findAdjacentElement} = await import('be-enhanced/findAdjacentElement.js');
+            const trigger = findAdjacentElement(buttonInsertPosition!, enhancedElement, 'button.be-delible-trigger');
+            if(trigger !== null) this.#trigger = new WeakRef(trigger as HTMLButtonElement);
             let byob = true;
-            if(this.#trigger === undefined){
+            if(this.trigger === undefined){
                 byob = false;
-                this.#trigger = document.createElement('button');
-                this.#trigger.type = 'button';
-                this.#trigger.classList.add('be-delible-trigger');
-                this.#trigger.ariaLabel = 'Delete this.';
-                this.#trigger.title = 'Delete this.';
-                self.insertAdjacentElement(buttonInsertPosition!, this.#trigger);
+                const trigger = document.createElement('button');
+                trigger.type = 'button';
+                trigger.classList.add('be-delible-trigger');
+                trigger.ariaLabel = 'Delete this.';
+                trigger.title = 'Delete this.';
+                enhancedElement.insertAdjacentElement(buttonInsertPosition!, trigger);
+                this.#trigger = new WeakRef(trigger);
             }
-            return [{resolved: true, byob}, {beDeleted: {on: 'click', of: this.#trigger}}]
+            return [{resolved: true, byob}, {beDeleted: {on: 'click', of: this.trigger}}] as POA
         }else{
-            //can't think of a scenario where consumer would want to change the trigger position midstream, so not bothering to do anything here
+            return [{}, {}] as POA
         }
     }
 
-    beDeleted({self}: PP): void {
-        self.remove();
-        this.#trigger!.remove();
+    beDeleted(self: this): void {
+        const {enhancedElement} = self;
+        enhancedElement.remove();
+        this.trigger?.remove();
     }
 
-    setBtnContent({buttonContent}: PP): void{
-        if(this.#trigger !== undefined){
-            this.#trigger.innerHTML = buttonContent!;//TODO:  sanitize
+    setBtnContent(self: this): void {
+        if(this.trigger !== undefined){
+            const {buttonContent} = self;
+            this.trigger.innerHTML = buttonContent! //TODO:  sanitize
         }
-    }
-
-    finale() {
-        this.#trigger = undefined;
     }
 }
 
+export interface BeDelible extends AllProps{}
+
 const tagName = 'be-delible';
-
 const ifWantsToBe = 'delible';
-
 const upgrade = '*';
 
-define<VirtualProps & BeDecoratedProps<VirtualProps, Actions>, Actions>({
-    config:{
+const xe = new XE<AP, Actions>({
+    config: {
         tagName,
-        propDefaults:{
-            ifWantsToBe,
-            virtualProps: ['buttonContent', 'buttonInsertPosition', 'byob'],
-            upgrade,
-            finale: 'finale',
-            proxyPropDefaults:{
-                byob: true,
-                buttonInsertPosition:'beforeend',
-                buttonContent: '&times;',
-            }
+        propDefaults: {
+            ...propDefaults,
+            byob: true,
+            buttonInsertPosition: 'beforeend',
+            buttonContent: '&times;',
         },
-        actions:{
+        propInfo: {
+            ...propInfo
+        },
+        actions: {
             addDeleteBtn: 'buttonInsertPosition',
             setBtnContent: {
                 ifAllOf: ['buttonContent'],
@@ -70,10 +82,7 @@ define<VirtualProps & BeDecoratedProps<VirtualProps, Actions>, Actions>({
             },
         }
     },
-    complexPropDefaults:{
-        controller: BeDelible,
-    }
+    superclass: BeDelible
 });
-
 
 register(ifWantsToBe, upgrade, tagName);
