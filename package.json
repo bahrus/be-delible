@@ -16,7 +16,8 @@
     "./index.js": "./index.js"
   },
   "files": [
-    "*.*"
+    "*.js",
+    "types.d.ts"
   ],
   "types": "types.d.ts",
   "scripts": {
