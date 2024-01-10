@@ -1,6 +1,5 @@
 import { BE, propDefaults, propInfo } from 'be-enhanced/BE.js';
 import { XE } from 'xtal-element/XE.js';
-import { register } from 'be-hive/register.js';
 export class BeDelible extends BE {
     static get beConfig() {
         return {
@@ -50,9 +49,7 @@ export class BeDelible extends BE {
         }
     }
 }
-const tagName = 'be-delible';
-const ifWantsToBe = 'delible';
-const upgrade = '*';
+export const tagName = 'be-delible';
 const xe = new XE({
     config: {
         tagName,
@@ -75,4 +72,3 @@ const xe = new XE({
     },
     superclass: BeDelible
 });
-register(ifWantsToBe, upgrade, tagName);

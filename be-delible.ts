@@ -2,7 +2,6 @@ import {BE, propDefaults, propInfo} from 'be-enhanced/BE.js';
 import {BEConfig} from 'be-enhanced/types';
 import {XE} from 'xtal-element/XE.js';
 import {Actions, AllProps, AP, PAP, ProPAP, POA, ProPOA} from './types';
-import {register} from 'be-hive/register.js';
 
 export class BeDelible extends BE<AP, Actions> implements Actions{
     static  override get beConfig(){
@@ -58,9 +57,8 @@ export class BeDelible extends BE<AP, Actions> implements Actions{
 
 export interface BeDelible extends AllProps{}
 
-const tagName = 'be-delible';
-const ifWantsToBe = 'delible';
-const upgrade = '*';
+export const tagName = 'be-delible';
+
 
 const xe = new XE<AP, Actions>({
     config: {
@@ -84,5 +82,3 @@ const xe = new XE<AP, Actions>({
     },
     superclass: BeDelible
 });
-
-register(ifWantsToBe, upgrade, tagName);
