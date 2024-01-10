@@ -11,9 +11,9 @@
   "main": "index.js",
   "module": "index.js",
   "exports": {
-    ".": "./index.js",
+    ".": "./delible.js",
     "./be-delible.js": "./be-delible.js",
-    "./index.js": "./index.js"
+    "./behivior.js": "./behivior.js"
   },
   "files": [
     "*.js",
@@ -23,17 +23,18 @@
   "scripts": {
     "test": "playwright test",
     "serve": "node node_modules/may-it-serve/serve.js",
-    "package-check": "package-check"
+    "safari": "npx playwright wk http://localhost:3030",
+    "update": "ncu -u && npm install"
   },
   "dependencies": {
-    "be-enhanced": "0.0.15",
-    "be-hive": "0.0.92",
-    "trans-render": "0.0.679",
-    "xtal-element": "0.0.559"
+    "be-enhanced": "0.0.58",
+    "be-hive": "0.0.129",
+    "trans-render": "0.0.724",
+    "xtal-element": "0.0.581"
   },
   "devDependencies": {
-    "may-it-serve": "0.0.5",
-    "@playwright/test": "1.33.0"
+    "may-it-serve": "0.0.6",
+    "@playwright/test": "1.40.1"
   },
   "repository": {
     "type": "git",
