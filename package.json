@@ -29,8 +29,7 @@
   "dependencies": {
     "be-enhanced": "0.0.155",
     "be-hive": "0.0.234",
-    "trans-render": "0.0.863",
-    "xtal-element": "0.0.619"
+    "trans-render": "0.0.863"
   },
   "devDependencies": {
     "ssi-server": "0.0.1",
