@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <!-- #include virtual="/imports.html" -->
 </head>
 <body>
     <label be-delible>
@@ -12,20 +13,6 @@
         <span>Check me out</span>
     </label>
     <div id=target></div>
-    <script type=importmap>
-        {
-            "imports": {
-                "be-enhanced/": "../node_modules/be-enhanced/",
-                "be-hive/":  "../node_modules/be-hive/",
-                "mount-observer/": "../node_modules/mount-observer/",
-                "trans-render/": "../node_modules/trans-render/",
-                "xtal-element/": "../node_modules/xtal-element/"
-            }
-        }
-    </script>
-    <script type=module>
-        import '../behivior.js';
-    </script>
     <script>
         function runTest(){
             document.querySelector('button').click();
@@ -37,7 +24,10 @@
         }
         setTimeout(() => {
             runTest();
-        }, 2000);
+        }, 500);
+    </script>
+    <script type=module>
+        import '/emc.js';
     </script>
 </body>
 </html>
