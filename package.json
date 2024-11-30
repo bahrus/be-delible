@@ -13,7 +13,7 @@
   "exports": {
     ".": "./delible.js",
     "./be-delible.js": "./be-delible.js",
-    "./behivior.js": "./behivior.js"
+    "./emc.js": "./emc.js"
   },
   "files": [
     "*.js",
