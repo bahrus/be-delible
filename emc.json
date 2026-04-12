@@ -16,12 +16,6 @@
             ]
         },
         "actions": {
-            "addDeleteBtn": {
-                "ifAllOf": [
-                    "triggerInsertPosition",
-                    "enhancedElement"
-                ]
-            },
             "setBtnContent": {
                 "ifAllOf": [
                     "buttonContent"

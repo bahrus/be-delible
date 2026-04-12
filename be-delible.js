@@ -54,8 +54,9 @@ class BeDelible {
      */
     async addDeleteBtn(self){
         const {triggerInsertPosition, enhancedElement, buttonContent} = self;
-        const { findAdjacentElement } = await import('trans-render/lib/findAdjacentElement.js');
-        let trigger = /** @type {HTMLButtonElement | null} */ (findAdjacentElement(triggerInsertPosition, enhancedElement, 'button.be-delible-trigger'));
+        let trigger = /** @type {HTMLButtonElement | null} */ ((await import('be-hive/findAdjacentElement.js')).findAdjacentElement(
+            triggerInsertPosition, enhancedElement, 'button.be-delible-trigger')
+        );
         let byob = true;
         if(trigger === null){
             byob = false;

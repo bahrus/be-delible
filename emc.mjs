@@ -22,9 +22,6 @@ export const emc = {
             properties: ['enhancedElement', 'trigger']
         },
         actions: {
-            addDeleteBtn: {
-                ifAllOf: ['triggerInsertPosition', 'enhancedElement']
-            },
             setBtnContent: {
                 ifAllOf: ['buttonContent'],
                 ifNoneOf: ['byob']
