@@ -27,7 +27,7 @@ class BeDelible extends BE{
         },
         positractions: [resolved, rejected],
         compacts: {
-            when_triggerInsertPosition_changes_invoke_addDeleteBtn: 0
+            when_triggerInsertPosition_changes_call_addDeleteBtn: 0
         },
         actions: {
             setBtnContent: {
