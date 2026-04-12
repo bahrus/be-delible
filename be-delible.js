@@ -1,7 +1,6 @@
 // @ts-check
 /** @import {Actions, PAP, AllProps, AP} from './types/be-delible/types' */;
 /** @import {RoundaboutOptions} from './types/roundabout/types' */;
-/** @import {ElementEnhancementGateway} from './types/assign-gingerly/types' */;
 /** @import {EMC} from './types/mount-observer/types' */;
 /** @import {RAConfig} from './types/roundabout/types' */;
 /**
@@ -18,17 +17,17 @@ class BeDelible {
 
     /**
      * @this {AllProps & Actions}
-     * @param {Element & ElementEnhancementGateway} enhancedElement 
+     * @param {Element} enhancedElement 
      * @param {*} ctx 
-     * @param {AllProps} initVals 
+     * @param {PAP} initVals 
      */
     constructor(enhancedElement, ctx, initVals){
         this.init(this, enhancedElement, initVals);
     }
 
     /**
-     * @param {AllProps} self 
-     * @param {Element & ElementEnhancementGateway} enhancedElement 
+     * @param {AllProps & Actions} self 
+     * @param {Element} enhancedElement 
      * @param {PAP} initVals 
      */
     async init(self, enhancedElement, initVals){
@@ -49,27 +48,27 @@ class BeDelible {
     }
 
     /**
+     * 
      * @param {AP} self 
-     * @returns {ProPAP}
+     * @returns 
      */
-    async addDeleteBtn(self){
-        const {triggerInsertPosition, enhancedElement, buttonContent} = self;
+    async addDeleteBtn(self) {
+        const { triggerInsertPosition, enhancedElement } = self;
         let trigger = /** @type {HTMLButtonElement | null} */ ((await import('be-hive/findAdjacentElement.js')).findAdjacentElement(
             triggerInsertPosition, enhancedElement, 'button.be-delible-trigger')
         );
         let byob = true;
-        if(trigger === null){
+        if (trigger === null) {
             byob = false;
             trigger = document.createElement('button');
-            trigger.type = 'button';
-            trigger.classList.add('be-delible-trigger');
-            trigger.ariaLabel = 'Delete this.';
-            trigger.title = 'Delete this.';
+            const {triggerSettings, withMethods} = customData.customData;
+            (await import('assign-gingerly/assignGingerly.js')).assignGingerly(trigger, triggerSettings, {withMethods});
             enhancedElement.insertAdjacentElement(triggerInsertPosition, trigger);
         }
         return /** @type {PAP} */ ({
-            trigger: new WeakRef(trigger),
-            byob,
+            trigger,
+            resolved: true,
+            byob
         });
     }
 
@@ -77,10 +76,8 @@ class BeDelible {
      * @param {AP} self 
      */
     setBtnContent(self) {
-        const {buttonContent, trigger} = self;
-        const triggerEl = trigger.deref();
-        if(triggerEl === undefined) return;
-        triggerEl.textContent = buttonContent;
+        const { buttonContent, trigger } = self;
+        trigger.textContent = buttonContent;
     }
 
     /**
@@ -89,7 +86,7 @@ class BeDelible {
     beDeleted(self){
         const { enhancedElement, trigger } = self;
         enhancedElement.remove();
-        trigger.deref()?.remove();
+        trigger?.remove();
     }
 }
 

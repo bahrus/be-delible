@@ -22,8 +22,11 @@ export const emc = {
             properties: ['enhancedElement', 'trigger']
         },
         actions: {
+            addDeleteBtn: {
+                ifAllOf: ['triggerInsertPosition', 'enhancedElement']
+            },
             setBtnContent: {
-                ifAllOf: ['buttonContent'],
+                ifAllOf: ['buttonContent', 'trigger', 'enhancedElement'],
                 ifNoneOf: ['byob']
             }
         },
@@ -31,12 +34,21 @@ export const emc = {
             trigger_to_beDeleted_on: 'click'
         },
         compacts: {
-            when_triggerInsertPosition_changes_call_addDeleteBtn: 0
+            when_resolved_changes_dispatch: 'resolved',
         },
         defaultPropVals: {
             byob: true,
             triggerInsertPosition: 'beforeend',
             buttonContent: '⌫'
+        },
+        customData: {
+            triggerSettings: {
+                type: 'button',
+                '?.classList?.add': 'be-delible-trigger',
+                ariaLabel: 'Delete this.',
+                title: 'Delete this.',
+            },
+            withMethods: ['add']
         }
     }
 }
