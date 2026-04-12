@@ -1,74 +1,95 @@
-import { BE, propDefaults, propInfo } from 'be-enhanced/BE.js';
-import { XE } from 'xtal-element/XE.js';
-export class BeDelible extends BE {
-    static get beConfig() {
-        return {
-            parse: true,
-        };
-    }
-    #trigger;
-    get trigger() {
-        if (this.#trigger === undefined)
-            return undefined;
-        return this.#trigger.deref();
-    }
-    async addDeleteBtn(self) {
-        if (this.trigger === undefined) {
-            //the check above is unlikely to ever fail.
-            const { buttonInsertPosition, enhancedElement } = self;
-            const { findAdjacentElement } = await import('be-enhanced/findAdjacentElement.js');
-            const trigger = findAdjacentElement(buttonInsertPosition, enhancedElement, 'button.be-delible-trigger');
-            if (trigger !== null)
-                this.#trigger = new WeakRef(trigger);
-            let byob = true;
-            if (this.trigger === undefined) {
-                byob = false;
-                const trigger = document.createElement('button');
-                trigger.type = 'button';
-                trigger.classList.add('be-delible-trigger');
-                trigger.ariaLabel = 'Delete this.';
-                trigger.title = 'Delete this.';
-                enhancedElement.insertAdjacentElement(buttonInsertPosition, trigger);
-                this.#trigger = new WeakRef(trigger);
-            }
-            return [{ resolved: true, byob }, { beDeleted: { on: 'click', of: this.trigger } }];
-        }
-        else {
-            return [{}, {}];
-        }
-    }
-    beDeleted(self) {
-        const { enhancedElement } = self;
-        enhancedElement.remove();
-        this.trigger?.remove();
-    }
-    setBtnContent(self) {
-        if (this.trigger !== undefined) {
-            const { buttonContent } = self;
-            this.trigger.innerHTML = buttonContent; //TODO:  sanitize
-        }
-    }
-}
-export const tagName = 'be-delible';
-const xe = new XE({
-    config: {
-        tagName,
-        propDefaults: {
-            ...propDefaults,
+// @ts-check
+import { resolved, rejected, propInfo} from 'be-enhanced/cc.js';
+import { BE } from 'be-enhanced/BE.js';
+import {dispatchEvent as de} from 'trans-render/positractions/dispatchEvent.js';
+
+/** @import {BEConfig, IEnhancement, BEAllProps} from './ts-refs/be-enhanced/types.d.ts' */
+/** @import {Actions, PAP, AllProps, AP, BAP} from './ts-refs/be-delible/types.d.ts' */;
+
+/**
+ * @implements {Actions}
+ */
+class BeDelible extends BE{
+    /**
+     * @type {BEConfig<BAP, Actions & IEnhancement>}
+     */
+    static config = {
+        propDefaults:{
             byob: true,
-            buttonInsertPosition: 'beforeend',
-            buttonContent: '&times;',
+            triggerInsertPosition: 'beforeend',
+            buttonContent: '⌫'
         },
         propInfo: {
-            ...propInfo
+            ...propInfo,
+            trigger: {
+                ro: true
+            }
+        },
+        positractions: [resolved, rejected],
+        compacts: {
+            when_triggerInsertPosition_changes_call_addDeleteBtn: 0
         },
         actions: {
-            addDeleteBtn: 'buttonInsertPosition',
             setBtnContent: {
                 ifAllOf: ['buttonContent'],
                 ifNoneOf: ['byob']
-            },
+            }
+        },
+        handlers: {
+            trigger_to_beDeleted_on: 'click'
         }
-    },
-    superclass: BeDelible
-});
+    }
+
+    de = de;
+
+    /**
+     * 
+     * @param {BAP} self 
+     * @returns 
+     */
+    async addDeleteBtn(self){
+        const {triggerInsertPosition, enhancedElement, buttonContent} = self;
+        const { findAdjacentElement } = await import('trans-render/lib/findAdjacentElement.js');
+        let trigger = /** @type {HTMLButtonElement | null} */ (findAdjacentElement(triggerInsertPosition, enhancedElement, 'button.be-clonable-trigger'));
+        let byob = true;
+        if(trigger === null){
+            byob = false;
+            trigger = document.createElement('button');
+            trigger.type = 'button';
+            trigger.classList.add('be-delible-trigger');
+            trigger.ariaLabel = 'Delete this.';
+            trigger.title = 'Delete this.';
+            enhancedElement.insertAdjacentElement(triggerInsertPosition, trigger);
+        }
+        return /** @type {PAP} */ ({
+            trigger: new WeakRef(trigger),
+            resolved: true,
+            byob,
+        });
+    }
+
+    /**
+     * 
+     * @param {BAP} self 
+     */
+    setBtnContent(self) {
+        const {buttonContent, trigger} = self;
+        const triggerEl = trigger.deref();
+        if(triggerEl === undefined) return;
+        //TODO: use trusted types
+        triggerEl.textContent = buttonContent;
+    }
+
+    /**
+     * 
+     * @param {BAP} self 
+     */
+    beDeleted(self){
+        const { enhancedElement, trigger } = self;
+        enhancedElement.remove();
+        trigger.deref()?.remove();
+    }
+}
+
+await BeDelible.bootUp();
+export { BeDelible }
