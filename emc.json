@@ -1,0 +1,46 @@
+{
+    "enhConfig": {
+        "enhKey": "BeDelible",
+        "spawn": "be-delible/be-delible.js",
+        "withAttrs": {
+            "base": "be-delible",
+            "triggerInsertPosition": "${base}-trigger-insert-position",
+            "buttonContent": "${base}-button-content"
+        }
+    },
+    "customData": {
+        "weakRef": {
+            "properties": [
+                "enhancedElement",
+                "trigger"
+            ]
+        },
+        "actions": {
+            "addDeleteBtn": {
+                "ifAllOf": [
+                    "triggerInsertPosition",
+                    "enhancedElement"
+                ]
+            },
+            "setBtnContent": {
+                "ifAllOf": [
+                    "buttonContent"
+                ],
+                "ifNoneOf": [
+                    "byob"
+                ]
+            }
+        },
+        "handlers": {
+            "trigger_to_beDeleted_on": "click"
+        },
+        "compacts": {
+            "when_triggerInsertPosition_changes_call_addDeleteBtn": 0
+        },
+        "defaultPropVals": {
+            "byob": true,
+            "triggerInsertPosition": "beforeend",
+            "buttonContent": "⌫"
+        }
+    }
+}

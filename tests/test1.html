@@ -13,9 +13,15 @@
         <span>Check me out</span>
     </label>
     <div id=target></div>
+    <be-hive>
+        <script type=emc src="be-delible/emc.mjs"></script>
+    </be-hive>
+    <script type=module>
+        import 'be-hive/be-hive.js';
+    </script>
     <script>
         function runTest(){
-            document.querySelector('button').click();
+            document.querySelector('.be-delible-trigger').click();
             setTimeout(() => {
                 if(document.querySelector('label') === null){
                     target.setAttribute('mark', 'good');
@@ -25,9 +31,6 @@
         setTimeout(() => {
             runTest();
         }, 500);
-    </script>
-    <script type=module>
-        import '/emc.js';
     </script>
 </body>
 </html>

@@ -1,0 +1,11 @@
+{
+    "enhConfig": {
+        "enhKey": "⌫",
+        "spawn": "be-delible/be-delible.js",
+        "withAttrs": {
+            "base": "⌫",
+            "triggerInsertPosition": "${base}-trigger-insert-position",
+            "buttonContent": "${base}-button-content"
+        }
+    }
+}
