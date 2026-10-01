@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programmatic imperative</title>
+    <!-- #include virtual="/imports.html" -->
+</head>
+<body>
+    <!-- No be-delible attribute, and no be-hive. -->
+    <label id="label">
+        <input type="checkbox" name="">
+        <span>Check me out</span>
+    </label>
+    <script type=module>
+        import {defBeDelible} from '/def.js';
+        const emc = await defBeDelible(document.body);
+        const beDelible = label.enh.get(emc);
+        Object.assign(beDelible, {
+            buttonContent: 'Delete',
+            triggerInsertPosition: 'afterend',
+        });
+        console.log(label.enh.beDelible);
+    </script>
+</body>
+</html>

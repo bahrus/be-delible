@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programmatic Declarative In Sequence</title>
+    <!-- #include virtual="/imports.html" -->
+</head>
+<body>
+    <!-- No be-delible attribute, and no be-hive. The config is registered first, then a property is set via the `.set` proxy, which attaches the enhancement. -->
+    <div id="container">
+        <label>
+            <input type="checkbox" name="">
+            <span>Check me out</span>
+        </label>
+    </div>
+    <div id="target"></div>
+    <script type=module>
+        import {defBeDelible} from '/def.js';
+        const subject = container.querySelector('label');
+        await defBeDelible(document.body);
+        // Only the first write needs to go through `.set` -- it triggers attachment.
+        subject.enh.set.beDelible.buttonContent = '✕';
+        const fail = reason => target.setAttribute('mark', reason);
+        setTimeout(() => {
+            const trigger = container.querySelector('button.be-delible-trigger');
+            if(trigger === null) return fail('no trigger button added');
+            if(subject.enh.beDelible.resolved !== true) return fail('resolved not set');
+            if(trigger.textContent !== '✕') return fail(`unexpected button content ${trigger.textContent}`);
+            if(trigger.parentElement !== subject) return fail('trigger not inserted beforeend');
+            trigger.click();
+            setTimeout(() => {
+                if(subject.isConnected) return fail('element not deleted');
+                if(trigger.isConnected) return fail('trigger not deleted');
+                target.setAttribute('mark', 'good');
+            }, 200);
+        }, 500);
+    </script>
+</body>
+</html>

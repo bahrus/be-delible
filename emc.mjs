@@ -9,7 +9,7 @@
  */
 export const emc = {
     enhConfig: {
-        enhKey: 'BeDelible',
+        enhKey: 'beDelible',
         spawn: 'be-delible/be-delible.js',
         withAttrs: {
             base: 'be-delible',
@@ -33,9 +33,8 @@ export const emc = {
         handlers: {
             trigger_to_beDeleted_on: 'click'
         },
-        compacts: {
-            when_resolved_changes_dispatch: 'resolved',
-        },
+        // lets callers listen for 'resolved' on the instance's propagator.
+        propagate: ['resolved'],
         defaultPropVals: {
             byob: true,
             triggerInsertPosition: 'beforeend',
